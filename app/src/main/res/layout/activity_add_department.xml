@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".AddDepartment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        >
+        <EditText
+
+            android:editable="false"
+            android:id="@+id/etDepartment"
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:gravity="start"
+            android:singleLine="true"
+            tools:ignore="Deprecated" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".2"
+            android:id="@+id/addUser"
+            android:background="@drawable/ic_baseline_add_circle"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll1"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <EditText
+            android:paddingStart="5dp"
+            android:id="@+id/etEmail"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1.4"
+            android:background="@drawable/edittext_border"
+            android:gravity="center_vertical"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSave"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight=".6"
+            android:text="@string/save" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/rv1"
+        android:layout_below="@+id/ll2"
+
+        />
+
+    <LinearLayout
+        android:layout_below="@+id/rv1"
+        android:id="@+id/ll3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:orientation="horizontal"
+        >
+        <EditText
+
+            android:editable="false"
+            android:id="@+id/etDepartmentIos"
+            android:layout_width="0dp"
+            android:layout_weight="1.8"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
+            android:gravity="start"
+            android:singleLine="true"
+            tools:ignore="Deprecated" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_margin="10dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight=".2"
+            android:id="@+id/addUserIos"
+            android:background="@drawable/ic_baseline_add_circle"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll3"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <EditText
+            android:paddingStart="5dp"
+            android:id="@+id/etEmailIos"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1.4"
+            android:background="@drawable/edittext_border"
+            android:gravity="center_vertical"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveIos"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight=".6"
+            android:text="@string/save" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_below="@+id/ll4"
+
+        />
+
+    <Spinner
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+         />
+
+</RelativeLayout>

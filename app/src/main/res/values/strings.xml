@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">WebConnectAssignment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_my_car_fluids_insolution">Check my car fluids insolution</string>
+    <string name="maruti_suzuki_s_presso">Maruti Suzuki S-Presso</string>
+    <string name="job_id_25678">Job Id: 25678</string>
+    <string name="malviya_nagar_delhi">Malviya Nagar, Delhi</string>
+    <string name="john_smith">John Smith</string>
+    <string name="_12_minutes_ago">12 minutes ago</string>
+    <string name="budget_600">Budget $600</string>
+    <string name="_10_days">10 Days</string>
+    <string name="save">Save</string>
+    <string name="user_email">User Email</string>
+    <string name="remove">Remove</string>
+</resources>
