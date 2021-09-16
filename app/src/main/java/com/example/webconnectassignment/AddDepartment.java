@@ -40,9 +40,11 @@ public class AddDepartment extends AppCompatActivity implements
     private RecyclerView courseRV,iosRV;
     private AndroidAdapter adapter;
     private IosAdapter adapter1;
+    private IosAdapter adapter2;
     private ArrayList<AndroidUserModel> courseModalArrayList;
     private ArrayList<AndroidUserModel> courseModalArrayList1;
-    private String androidJson, iosJson;
+    private ArrayList<AndroidUserModel> courseModalArrayList2;
+    private String androidJson, iosJson, webJson;
     Gson gson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +70,6 @@ public class AddDepartment extends AppCompatActivity implements
         iosRV = findViewById(R.id.rv2);
         adapter = new AndroidAdapter(courseModalArrayList, AddDepartment.this);
 
-        // calling method to load data
-        // from shared prefs.
-        loadData();
-        loadDataIos();
-        // calling method to build
-        // recycler view.
-        buildRecyclerView();
-        buildRecyclerViewIos();
         Spinner spin = findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
 
@@ -105,9 +99,23 @@ public class AddDepartment extends AppCompatActivity implements
 
         if (i==1){
             etDepartment.setText(department[i]);
+            courseModalArrayList1 = new ArrayList<>();
+            courseModalArrayList1.clear();
+            loadData();
+            buildRecyclerView();
         }
         else if (i==2){
+            etDepartment.setText(department[i]);
+            courseModalArrayList = new ArrayList<>();
+            courseModalArrayList.clear();
+            loadDataIos();
+            buildRecyclerViewIos();
+        }
+        else if (i==3){
             etDepartmentIos.setText(department[i]);
+
+            loadDataWeb();
+            buildRecyclerViewWeb();
         }
 
     }
@@ -177,9 +185,9 @@ public class AddDepartment extends AppCompatActivity implements
         // shared prefs if not present setting it as null.
         String json = sharedPreferences.getString("androidUser", null);
 
-        if (json!=null){
-            etDepartment.setText("Android");
-        }
+//        if (json!=null){
+//            etDepartment.setText("Android");
+//        }
 
         // below line is to get the type of our array list.
         Type type = new TypeToken<ArrayList<AndroidUserModel>>() {}.getType();
@@ -219,8 +227,8 @@ public class AddDepartment extends AppCompatActivity implements
 
         // below line is to apply changes
         // and save data in shared prefs.
-        editor.apply();
-         etUserIos.setText("");
+         editor.apply();
+         etUser.setText("");
         // after saving data we are displaying a toast message.
         //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
     }
@@ -231,13 +239,13 @@ public class AddDepartment extends AppCompatActivity implements
 
         // adding layout manager to our recycler view.
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        iosRV.setHasFixedSize(true);
+        courseRV.setHasFixedSize(true);
 
         // setting layout manager to our recycler view.
-        iosRV.setLayoutManager(manager);
+        courseRV.setLayoutManager(manager);
 
         // setting adapter to our recycler view.
-        iosRV.setAdapter(adapter1);
+        courseRV.setAdapter(adapter1);
     }
 
     @SuppressLint("SetTextI18n")
@@ -254,9 +262,9 @@ public class AddDepartment extends AppCompatActivity implements
         // shared prefs if not present setting it as null.
         String json = sharedPreferences.getString("iosUser", null);
 
-        if (json != null){
-            etDepartmentIos.setText("IOS");
-        }
+//        if (json != null){
+//            etDepartmentIos.setText("IOS");
+//        }
 
         // below line is to get the type of our array list.
         Type type = new TypeToken<ArrayList<AndroidUserModel>>() {}.getType();
@@ -273,6 +281,82 @@ public class AddDepartment extends AppCompatActivity implements
         }
     }
 
+    private void saveDataWeb() {
+        // method for saving the data in array list.
+        // creating a variable for storing data in
+        // shared preferences.
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+
+        // creating a variable for editor to
+        // store data in shared preferences.
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // creating a new variable for gson.
+        Gson gson = new Gson();
+
+        // getting data from gson and storing it in a string.
+        webJson = gson.toJson(courseModalArrayList2);
+
+        // below line is to save data in shared
+        // prefs in the form of string.
+        editor.putString("webUser", webJson);
+
+        // below line is to apply changes
+        // and save data in shared prefs.
+        editor.apply();
+        etUserIos.setText("");
+        // after saving data we are displaying a toast message.
+        //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
+    }
+
+    private void buildRecyclerViewWeb() {
+        // initializing our adapter class.
+        adapter2 = new IosAdapter(courseModalArrayList2, AddDepartment.this);
+
+        // adding layout manager to our recycler view.
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        iosRV.setHasFixedSize(true);
+
+        // setting layout manager to our recycler view.
+        iosRV.setLayoutManager(manager);
+
+        // setting adapter to our recycler view.
+        iosRV.setAdapter(adapter2);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void loadDataWeb() {
+        // method to load arraylist from shared prefs
+        // initializing our shared prefs with name as
+        // shared preferences.
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+
+        // creating a variable for gson.
+        Gson gson = new Gson();
+
+        // below line is to get to string present from our
+        // shared prefs if not present setting it as null.
+        String json = sharedPreferences.getString("webUser", null);
+
+//        if (json != null){
+//            etDepartmentIos.setText("IOS");
+//        }
+
+        // below line is to get the type of our array list.
+        Type type = new TypeToken<ArrayList<AndroidUserModel>>() {}.getType();
+
+        // in below line we are getting data from gson
+        // and saving it to our array list
+        courseModalArrayList2 = gson.fromJson(json, type);
+
+        // checking below if the array list is empty or not
+        if (courseModalArrayList2 == null) {
+            // if the array list is empty
+            // creating a new array list.
+            courseModalArrayList2 = new ArrayList<>();
+        }
+    }
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -280,11 +364,21 @@ public class AddDepartment extends AppCompatActivity implements
 
         switch (view.getId()){
             case  R.id.btnSave:
-               addAndroidUser();
+                if (etDepartment.getText().toString().equals("Android")){
+                    courseModalArrayList1 = new ArrayList<>();
+                    courseModalArrayList1.clear();
+                    addAndroidUser();
+                }
+                else if(etDepartment.getText().toString().equals("IOS")){
+                    courseModalArrayList = new ArrayList<>();
+                    courseModalArrayList.clear();
+                    addIosUser();
+                }
+
                 break;
 
             case R.id.btnSaveIos:
-                addIosUser();
+                   addWebUser();
                 break;
             case R.id.addUser:
                 ll2.setVisibility(View.VISIBLE);
@@ -322,21 +416,47 @@ public class AddDepartment extends AppCompatActivity implements
     }
 
     private void addIosUser(){
+        if (!etUser.getText().toString().equals("") && !etDepartment.getText().toString().equals("")) {
+
+            // getting data from gson and storing it in a string.
+            androidJson = gson.toJson(courseModalArrayList);
+            iosJson = gson.toJson(courseModalArrayList1);
+            if (androidJson.contains(etUser.getText().toString()) || iosJson.contains(etUser.getText().toString())){
+                Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // below line is use to add data to array list.
+                courseModalArrayList1.add(new AndroidUserModel(etUser.getText().toString(),etDepartment.getText().toString()));
+                // notifying adapter when new data added.
+                adapter1.notifyItemInserted(courseModalArrayList1.size());
+
+                saveDataIos();
+            }
+
+        }
+        else {
+            Toast.makeText(this, "All Fields are Required", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private void addWebUser(){
         if (!etUserIos.getText().toString().equals("") && !etDepartmentIos.getText().toString().equals("")) {
 
             // getting data from gson and storing it in a string.
             androidJson = gson.toJson(courseModalArrayList);
             iosJson = gson.toJson(courseModalArrayList1);
-            if (androidJson.contains(etUserIos.getText().toString()) || iosJson.contains(etUserIos.getText().toString())){
+            webJson = gson.toJson(courseModalArrayList2);
+            if (androidJson.contains(etUserIos.getText().toString()) || iosJson.contains(etDepartmentIos.getText().toString()) || webJson.contains(etUserIos.getText().toString())){
                 Toast.makeText(getApplicationContext(),"User Already Exist",Toast.LENGTH_SHORT).show();
             }
             else {
                 // below line is use to add data to array list.
-                courseModalArrayList1.add(new AndroidUserModel(etUserIos.getText().toString(),etDepartmentIos.getText().toString()));
+                courseModalArrayList2.add(new AndroidUserModel(etUserIos.getText().toString(),etDepartmentIos.getText().toString()));
                 // notifying adapter when new data added.
-                adapter1.notifyItemInserted(courseModalArrayList1.size());
+                adapter2.notifyItemInserted(courseModalArrayList2.size());
 
-                saveDataIos();
+                saveDataWeb();
             }
 
         }

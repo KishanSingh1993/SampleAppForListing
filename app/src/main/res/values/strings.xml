@@ -13,4 +13,6 @@
     <string name="save">Save</string>
     <string name="user_email">User Email</string>
     <string name="remove">Remove</string>
+    <string name="from_date_range">From Date Range</string>
+    <string name="confirm">Confirm</string>
 </resources>

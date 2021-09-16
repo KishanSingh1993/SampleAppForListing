@@ -1,7 +1,11 @@
 package com.example.webconnectassignment.fragments;
 
+import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,15 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.webconnectassignment.model.ActiveItems;
 import com.example.webconnectassignment.R;
 import com.example.webconnectassignment.adapter.RecyclerviewItemAdapter;
 import com.example.webconnectassignment.listener.ClickListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.savvi.rangedatepicker.CalendarPickerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +47,8 @@ public class ActiveFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerviewItemAdapter recyclerviewItemAdapter;
     private List<ActiveItems> itemsList;
+
+
 
     public ActiveFragment() {
         // Required empty public constructor
@@ -83,7 +96,11 @@ public class ActiveFragment extends Fragment {
             @Override
             public void onClick(View view, ActiveItems data, int position) {
                 //Toast.makeText(getContext(),"Position = "+position+"\n Item = "+data.getName(), Toast.LENGTH_SHORT).show();
-                materialDatePicker.show(getParentFragmentManager(),"Demo");
+                //materialDatePicker.show(getParentFragmentManager(),"Demo");
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    showCustomDialog(view);
+                }
             }
 
 
@@ -98,5 +115,68 @@ public class ActiveFragment extends Fragment {
             itemsList.add(items);
         }
         recyclerviewItemAdapter.notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void showCustomDialog(View v) {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = v.findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.custom_dialog, viewGroup, false);
+        AppCompatButton okButton = dialogView.findViewById(R.id.buttonOk);
+        final Calendar nextYear = Calendar.getInstance();
+        nextYear.add(Calendar.YEAR, 10);
+
+        final Calendar lastYear = Calendar.getInstance();
+        lastYear.add(Calendar.YEAR, - 10);
+
+        CalendarPickerView calendar = dialogView.findViewById(R.id.datepicker);
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(2);
+
+        calendar.deactivateDates(list);
+        ArrayList<Date> arrayList = new ArrayList<>();
+        try {
+            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
+
+            String strdate = "22-4-2019";
+            String strdate2 = "26-4-2019";
+
+            Date newdate = dateformat.parse(strdate);
+            Date newdate2 = dateformat.parse(strdate2);
+            arrayList.add(newdate);
+            arrayList.add(newdate2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        calendar.init(lastYear.getTime(), nextYear.getTime()) //
+                .inMode(CalendarPickerView.SelectionMode.RANGE)
+                .withSelectedDate(new Date())
+                // deactivates given dates, non selectable
+                .withDeactivateDates(list)
+                // highlight dates in red color, mean they are aleady used.
+                //.withHighlightedDates(arrayList)
+                // add subtitles to the dates pass a arrayList of SubTitle objects with date and text
+                ;
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getContext(), "list " + calendar.getSelectedDates().toString(), Toast.LENGTH_LONG).show();
+                alertDialog.dismiss();
+            }
+        });
     }
 }
