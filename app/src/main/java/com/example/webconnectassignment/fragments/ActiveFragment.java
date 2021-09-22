@@ -1,5 +1,6 @@
 package com.example.webconnectassignment.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -138,7 +139,7 @@ public class ActiveFragment extends Fragment {
         calendar.deactivateDates(list);
         ArrayList<Date> arrayList = new ArrayList<>();
         try {
-            SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
 
             String strdate = "22-4-2019";
             String strdate2 = "26-4-2019";
